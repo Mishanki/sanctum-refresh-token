@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Larahook\SanctumRefreshToken;
 
 use Larahook\SanctumRefreshToken\Model\PersonalAccessToken;
 use Illuminate\Support\Facades\Route;

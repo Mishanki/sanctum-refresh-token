@@ -4,6 +4,15 @@
 ```composer
 composer require larahook/sanctum-refresh-token
 ```
+Add Trait in `User` model class.
+```php
+use Larahook\SanctumRefreshToken\Trait\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasApiTokens;
+}
+```
 
 ## Config
 You can also publish the config file to change implementations
