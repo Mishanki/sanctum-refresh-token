@@ -14,6 +14,18 @@ class User extends Authenticatable
 }
 ```
 
+
+Add `SanctumRefreshTokenServiceProvider` in `config/app.php`
+```php
+'providers' => ServiceProvider::defaultProviders()->merge([
+        //...
+        EventServiceProvider::class,
+        RouteServiceProvider::class,
+        SanctumRefreshTokenServiceProvider::class,
+    ])->toArray(),
+```
+
+
 ## Config
 You can also publish the config file to change implementations
 ```composer
