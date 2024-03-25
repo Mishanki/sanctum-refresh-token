@@ -31,3 +31,9 @@ You can also publish the config file to change implementations
 ```composer
 php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefreshTokenServiceProvider" --tag=config
 ```
+## Migration
+Install migrations
+```composer
+ php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefreshTokenServiceProvider" --tag=migrations
+ php artisan migrate 
+```
