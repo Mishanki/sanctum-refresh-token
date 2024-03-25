@@ -1,0 +1,52 @@
+{
+  "name": "larahook/sanctum-refresh-token",
+  "type": "library",
+  "description": "Sanctum authentication with refresh token",
+  "keywords": [
+    "laravel",
+    "sanctum",
+    "refresh token",
+    "authentication"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mikhail Mishankin",
+      "email": "mishanki@yandex.ru"
+    }
+  ],
+  "homepage": "https://github.com/Mishanki/sanctum-refresh-token",
+  "support": {
+    "email": "mishanki@yandex.ru",
+    "issues": "https://github.com/Mishanki/sanctum-refresh-token/issues",
+    "source": "https://github.com/Mishanki/sanctum-refresh-token"
+  },
+  "require": {
+    "php": "^7.4|^8.0",
+    "laravel/framework": "^10.0"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Larahook\\SanctumRefreshToken\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Larahook\\SanctumRefreshToken\\SanctumRefreshTokenServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
