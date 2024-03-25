@@ -39,9 +39,9 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return void
+     * @return mixed
      */
-    protected function registerMigrations(): void
+    protected function registerMigrations()
     {
         if (Sanctum::shouldRunMigrations()) {
             return $this->loadMigrationsFrom(__DIR__.'/../Migration');
