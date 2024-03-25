@@ -10,13 +10,15 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::table('personal_access_tokens', static function (Blueprint $table) {
-            $table->bigInteger('refresh_id')->nullable();
-            $table->foreign('refresh_id')
-                ->on('personal_access_tokens')
-                ->references('id')
-            ;
-        });
+        if(!Schema::hasColumn('personal_access_tokens', 'refresh_id')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->bigInteger('refresh_id')->nullable();
+                $table->foreign('refresh_id')
+                    ->on('personal_access_tokens')
+                    ->references('id')
+                ;
+            });
+        }
     }
 
     /**
@@ -24,8 +26,10 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::table('personal_access_tokens', static function (Blueprint $table) {
-            $table->dropConstrainedForeignId('refresh_id');
-        });
+        if(Schema::hasColumn('personal_access_tokens', 'refresh_id')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->dropConstrainedForeignId('refresh_id');
+            });
+        }
     }
 };
