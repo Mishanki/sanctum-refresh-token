@@ -37,3 +37,18 @@ Install migrations
  php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefreshTokenServiceProvider" --tag=migrations
  php artisan migrate 
 ```
+
+## Usage
+
+```php
+# Create tokens
+$accessToken = $user->createAuthToken($deviceName, $expiresAt);
+$refreshToken = $user->createRefreshToken($deviceName, $expiresAt);
+
+# Get ID
+$accessTokenId = $accessToken->accessToken->getAttribute('id'),
+$refreshTokenId = $refreshToken->accessToken->getAttribute('id')
+
+# Save refresh_id for access token
+PersonalAccessToken::whereId($accessTokenId)->update(['refresh_id' => $refreshTokenId]);
+```
