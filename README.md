@@ -41,14 +41,25 @@ Install migrations
 ## Usage
 
 ```php
-# Create tokens
-$accessToken = $user->createAuthToken($deviceName, $expiresAt);
-$refreshToken = $user->createRefreshToken($deviceName, $expiresAt);
+public function createTokens(User $user, string $deviceName, ?\DateTimeInterface $expiresAt = null): array
+{    
+    # Create tokens
+    $accessToken = $user->createAuthToken($deviceName, $expiresAt);
+    $refreshToken = $user->createRefreshToken($deviceName, $expiresAt);
 
-# Get ID
-$accessTokenId = $accessToken->accessToken->getAttribute('id'),
-$refreshTokenId = $refreshToken->accessToken->getAttribute('id')
+    # Get ID
+    $accessTokenId = $accessToken->accessToken->getAttribute('id'),
+    $refreshTokenId = $refreshToken->accessToken->getAttribute('id')
 
-# Save refresh_id for access token
-PersonalAccessToken::whereId($accessTokenId)->update(['refresh_id' => $refreshTokenId]);
+    # Save refresh_id for access token
+    PersonalAccessToken::whereId($accessTokenId)->update(['refresh_id' => $refreshTokenId]);
+
+    # Send response with access_token and refresh_token
+    return [
+        'access_token' => $accessToken->plainTextToken,
+        'access_token_expiration' => $accessToken->accessToken->expires_at ?? null,
+        'refresh_token' => $refreshToken->plainTextToken,
+        'refresh_token_expiration' => $refreshToken->accessToken->expires_at ?? null,
+    ];
+}
 ```
