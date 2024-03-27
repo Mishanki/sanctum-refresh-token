@@ -40,8 +40,8 @@ php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefre
 
 ## Usage
 ### Add trait `AuthTokens`
-- `createTokens` - create access_token and refresh_token
-- `refresh` - unlink current token pair and create new access_token and refresh_token
+- `createTokenPair` - create `access_token` and `refresh_token`
+- `refreshTokenPair` - unlink current token pair and create new `access_token` and `refresh_token`
 - `logoutTokenPair` - unlink current token pair
 ```php
 use Larahook\SanctumRefreshToken\Trait\AuthTokens;
