@@ -15,8 +15,11 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/sanctum-refresh-token.php', 'sanctum-refresh-token');
+
+        # Repositories
+        $this->app->bind(\Larahook\SanctumRefreshToken\Repository\PersonalAccessTokenRepositoryInterface::class, \Larahook\SanctumRefreshToken\Repository\PersonalAccessTokenRepository::class);
     }
-    
+
     /**
      * Bootstrap services.
      */
@@ -61,8 +64,8 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
         }
 
         return collect($routeNames)->contains(Route::currentRouteName()) ?
-           $this->isRefreshTokenValid($token) :
-           $this->isAuthTokenValid($token);
+            $this->isRefreshTokenValid($token) :
+            $this->isAuthTokenValid($token);
     }
 
     /**

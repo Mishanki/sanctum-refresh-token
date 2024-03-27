@@ -5,10 +5,14 @@ namespace Larahook\SanctumRefreshToken\Trait;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Larahook\SanctumRefreshToken\Repository\PersonalAccessTokenRepositoryInterface;
 use Laravel\Sanctum\NewAccessToken;
 
 trait AuthTokens
 {
+    /* @var $personalAccessTokenRepository PersonalAccessTokenRepositoryInterface */
+    private PersonalAccessTokenRepositoryInterface $personalAccessTokenRepository;
+
     /**
      * @param User $user
      * @param string $deviceName
@@ -23,14 +27,15 @@ trait AuthTokens
         ?Carbon $accessTokenExpiresAt = null,
         ?Carbon $refreshTokenExpiresAt = null,
     ): array {
+        $this->init();
+
         $accessToken = $user->createAuthToken($deviceName, $accessTokenExpiresAt);
         $refreshToken = $user->createRefreshToken($deviceName, $refreshTokenExpiresAt);
 
-        $accessTokenId = $accessToken->accessToken->getAttribute('id');
-        $refreshTokenId = $refreshToken->accessToken->getAttribute('id');
-
-        config('sanctum-refresh-token.personal_access_token_model')::whereId($accessTokenId)
-            ->update(['refresh_id' => $refreshTokenId,]);
+        $this->personalAccessTokenRepository->saveTokenPair(
+            $accessToken->accessToken->getAttribute('id'),
+            $refreshToken->accessToken->getAttribute('id'),
+        );
 
         return [
             'access_token' => $accessToken->plainTextToken,
@@ -38,5 +43,11 @@ trait AuthTokens
             'refresh_token' => $refreshToken->plainTextToken,
             'refresh_token_expiration' => $refreshToken->accessToken->expires_at ?? null,
         ];
+    }
+
+    private function init()
+    {
+        /* @var $personalAccessTokenRepository PersonalAccessTokenRepositoryInterface */
+        $this->personalAccessTokenRepository = app()->make(PersonalAccessTokenRepositoryInterface::class);
     }
 }
