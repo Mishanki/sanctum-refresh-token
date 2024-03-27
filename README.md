@@ -4,7 +4,7 @@
 ```composer
 composer require larahook/sanctum-refresh-token
 ```
-Add Trait in `User` model class.
+- Add Trait in `User` model class.
 ```php
 use Larahook\SanctumRefreshToken\Trait\HasApiTokens;
 
@@ -15,7 +15,7 @@ class User extends Authenticatable
 ```
 
 
-Add `SanctumRefreshTokenServiceProvider` in `config/app.php`
+- Add `SanctumRefreshTokenServiceProvider` in `config/app.php`
 ```php
 'providers' => ServiceProvider::defaultProviders()->merge([
         //...
@@ -27,19 +27,22 @@ Add `SanctumRefreshTokenServiceProvider` in `config/app.php`
 
 
 ## Config
-You can also publish the config file to change implementations
+- You can also publish the config file to change implementations
 ```composer
 php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefreshTokenServiceProvider" --tag=config
 ```
 ## Migration
-Install migrations
+- Install migrations
 ```composer
  php artisan vendor:publish --provider="Larahook\SanctumRefreshToken\SanctumRefreshTokenServiceProvider" --tag=migrations
  php artisan migrate 
 ```
 
 ## Usage
-Add trait `AuthTokens` and call method `createTokens`
+### Add trait `AuthTokens`
+- `createTokens` - create access_token and refresh_token
+- `refresh` - unlink current token pair and create new access_token and refresh_token
+- `logoutTokenPair` - unlink current token pair
 ```php
 use Larahook\SanctumRefreshToken\Trait\AuthTokens;
 
@@ -50,11 +53,29 @@ class SomeClass
     public function login(string $email, string $password, string $deviceName): array
     {
         $user = User::whereEmail($email)->first();
-        if (!$user || !$this->isValidPassword($password, $user->getPassword())) {
-            throw new UnauthorizedException('The provided credentials are incorrect.', Errors::AUTHORIZATION_ERROR->value);
-        }
+        // ...some login pass validation
 
-        return $this->createTokens($user, $deviceName);
+        return $this->createTokenPair($user, $deviceName);
+    }
+    
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function refresh(User $user): array
+    {
+        return $this->refreshTokenPair($user);
+    }
+    
+    /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function logout(User $user): bool
+    {
+        return $this->logoutTokenPair($user);
     }
 }
 ```
