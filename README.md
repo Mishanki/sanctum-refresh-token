@@ -39,27 +39,22 @@ Install migrations
 ```
 
 ## Usage
-
+Add trait `AuthTokens` and call method `createTokens`
 ```php
-public function createTokens(User $user, string $deviceName, ?\DateTimeInterface $expiresAt = null): array
-{    
-    # Create tokens
-    $accessToken = $user->createAuthToken($deviceName, $expiresAt);
-    $refreshToken = $user->createRefreshToken($deviceName, $expiresAt);
+use Larahook\SanctumRefreshToken\Trait\AuthTokens;
 
-    # Get ID
-    $accessTokenId = $accessToken->accessToken->getAttribute('id'),
-    $refreshTokenId = $refreshToken->accessToken->getAttribute('id')
+class SomeClass
+{
+    use AuthTokens;
 
-    # Save refresh_id for access token
-    PersonalAccessToken::whereId($accessTokenId)->update(['refresh_id' => $refreshTokenId]);
+    public function login(string $email, string $password, string $deviceName): array
+    {
+        $user = User::whereEmail($email)->first();
+        if (!$user || !$this->isValidPassword($password, $user->getPassword())) {
+            throw new UnauthorizedException('The provided credentials are incorrect.', Errors::AUTHORIZATION_ERROR->value);
+        }
 
-    # Send response with access_token and refresh_token
-    return [
-        'access_token' => $accessToken->plainTextToken,
-        'access_token_expiration' => $accessToken->accessToken->expires_at ?? null,
-        'refresh_token' => $refreshToken->plainTextToken,
-        'refresh_token_expiration' => $refreshToken->accessToken->expires_at ?? null,
-    ];
+        return $this->createTokens($user, $deviceName);
+    }
 }
 ```

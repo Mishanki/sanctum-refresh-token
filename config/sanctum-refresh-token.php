@@ -3,6 +3,16 @@
 return [
     /*
     |--------------------------------------------------------------------------
+    | PersonalAccessToken model
+    |--------------------------------------------------------------------------
+    |
+    | This model with refresh_id column
+    |
+    */
+    'personal_access_token_model' => \Larahook\SanctumRefreshToken\Model\PersonalAccessToken::class,
+
+    /*
+    |--------------------------------------------------------------------------
     | Refresh Route Name
     |--------------------------------------------------------------------------
     |
