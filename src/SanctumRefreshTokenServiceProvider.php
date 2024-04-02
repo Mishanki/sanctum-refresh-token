@@ -31,23 +31,12 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
         });
 
         if ($this->app->runningInConsole()) {
-            $this->registerMigrations();
             $this->publishes([
                 __DIR__.'/../src/Migration' => database_path('migrations'),
             ], 'migrations');
             $this->publishes([
                 __DIR__ . '/../config/sanctum-refresh-token.php' => config_path('sanctum-refresh-token.php'),
             ], 'config');
-        }
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function registerMigrations()
-    {
-        if (Sanctum::shouldRunMigrations()) {
-            return $this->loadMigrationsFrom(__DIR__.'/../src/Migration');
         }
     }
 
