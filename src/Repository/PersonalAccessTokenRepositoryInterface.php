@@ -7,11 +7,11 @@ use Larahook\SanctumRefreshToken\Model\PersonalAccessToken;
 
 interface PersonalAccessTokenRepositoryInterface
 {
-    public function saveTokenPair(int $accessTokenId, int $refreshTokenId): bool;
+    public function saveTokenPair(int $accessTokenId, int|string $refreshTokenId): bool;
 
     public function getCurrentAccessToken(User $user): PersonalAccessToken;
 
-    public function removeTokenById(User $user, int $id): bool;
+    public function removeTokenById(User $user, int|string $id): bool;
 
-    public function removeTokenByRefreshId(User $user, int $refreshId): bool;
+    public function removeTokenByRefreshId(User $user, int|string $refreshId): bool;
 }

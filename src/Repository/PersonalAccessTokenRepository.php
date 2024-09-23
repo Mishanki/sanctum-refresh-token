@@ -8,12 +8,12 @@ use Larahook\SanctumRefreshToken\Model\PersonalAccessToken;
 class PersonalAccessTokenRepository implements PersonalAccessTokenRepositoryInterface
 {
     /**
-     * @param int $accessTokenId
-     * @param int $refreshTokenId
+     * @param int|string $accessTokenId
+     * @param int|string $refreshTokenId
      *
      * @return bool
      */
-    public function saveTokenPair(int $accessTokenId, int $refreshTokenId): bool
+    public function saveTokenPair(int|string $accessTokenId, int|string $refreshTokenId): bool
     {
         return (bool) config('sanctum-refresh-token.personal_access_token_model')::whereId($accessTokenId)->update([
             'refresh_id' => $refreshTokenId,
@@ -33,11 +33,11 @@ class PersonalAccessTokenRepository implements PersonalAccessTokenRepositoryInte
 
     /**
      * @param User $user
-     * @param int $id
+     * @param int|string $id
      *
      * @return bool
      */
-    public function removeTokenById(User $user, int $id): bool
+    public function removeTokenById(User $user, int|string $id): bool
     {
         return (bool) config('sanctum-refresh-token.personal_access_token_model')::whereId($id)
             ->whereTokenableType($user::class)
@@ -52,7 +52,7 @@ class PersonalAccessTokenRepository implements PersonalAccessTokenRepositoryInte
      *
      * @return bool
      */
-    public function removeTokenByRefreshId(User $user, int $refreshId): bool
+    public function removeTokenByRefreshId(User $user, int|string $refreshId): bool
     {
         return (bool) config('sanctum-refresh-token.personal_access_token_model')::whereRefreshId($refreshId)
             ->whereTokenableType($user::class)
