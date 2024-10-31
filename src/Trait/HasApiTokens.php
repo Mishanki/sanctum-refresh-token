@@ -28,7 +28,7 @@ trait HasApiTokens
             'expires_at' => $expiresAt,
         ]);
 
-        return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
+        return new NewAccessToken($token, $plainTextToken);
     }
 
     /**
