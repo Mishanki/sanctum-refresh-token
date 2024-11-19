@@ -19,6 +19,16 @@ return new class() extends Migration {
                 ;
             });
         }
+        if(!Schema::hasColumn('personal_access_tokens', 'created_ip')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->bigInteger('created_ip')->nullable();
+            });
+        }
+        if(!Schema::hasColumn('personal_access_tokens', 'updated_ip')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->bigInteger('updated_ip')->nullable();
+            });
+        }
     }
 
     /**
@@ -29,6 +39,16 @@ return new class() extends Migration {
         if(Schema::hasColumn('personal_access_tokens', 'refresh_id')) {
             Schema::table('personal_access_tokens', static function (Blueprint $table) {
                 $table->dropConstrainedForeignId('refresh_id');
+            });
+        }
+        if(Schema::hasColumn('personal_access_tokens', 'created_ip')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->dropConstrainedForeignId('created_ip');
+            });
+        }
+        if(Schema::hasColumn('personal_access_tokens', 'updated_ip')) {
+            Schema::table('personal_access_tokens', static function (Blueprint $table) {
+                $table->dropConstrainedForeignId('updated_ip');
             });
         }
     }

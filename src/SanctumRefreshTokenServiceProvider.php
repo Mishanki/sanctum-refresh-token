@@ -27,7 +27,11 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
     {
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Sanctum::authenticateAccessTokensUsing(function ($token, $isValid): bool {
-            return $isValid && $this->isTokenAbilityValid($token);
+            if ($isTokenValid = $isValid && $this->isTokenAbilityValid($token)) {
+                $this->updateIp($token);
+            }
+
+            return $isTokenValid;
         });
 
         if ($this->app->runningInConsole()) {
@@ -55,6 +59,14 @@ class SanctumRefreshTokenServiceProvider extends ServiceProvider
         return collect($routeNames)->contains(Route::currentRouteName()) ?
             $this->isRefreshTokenValid($token) :
             $this->isAuthTokenValid($token);
+    }
+
+    /**
+     * @param PersonalAccessToken $token
+     */
+    private function updateIp(PersonalAccessToken $token): void
+    {
+        $token->update(['updated_ip' => request()->ip()]);
     }
 
     /**

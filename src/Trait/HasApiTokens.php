@@ -26,6 +26,7 @@ trait HasApiTokens
             'token' => hash('sha256', $plainTextToken = Str::random(40)),
             'abilities' => $abilities,
             'expires_at' => $expiresAt,
+            'created_ip' => request()->ip(),
         ]);
 
         return new NewAccessToken($token, $plainTextToken);
