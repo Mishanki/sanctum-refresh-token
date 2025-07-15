@@ -14,11 +14,11 @@ trait HasApiTokens
     /**
      * @param string $name
      * @param array $abilities
-     * @param null|\DateTimeInterface $expiresAt
+     * @param \DateTimeInterface $expiresAt
      *
      * @return NewAccessToken
      */
-    public function createToken(string $name, array $abilities = ['*'], \DateTimeInterface $expiresAt = null): NewAccessToken
+    public function createToken(string $name, array $abilities, \DateTimeInterface $expiresAt): NewAccessToken
     {
         /** @var PersonalAccessToken $token */
         $token = $this->tokens()->create([
