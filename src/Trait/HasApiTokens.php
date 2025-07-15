@@ -14,11 +14,11 @@ trait HasApiTokens
     /**
      * @param string $name
      * @param array $abilities
-     * @param \DateTimeInterface $expiresAt
+     * @param null\DateTimeInterface $expiresAt
      *
      * @return NewAccessToken
      */
-    public function createToken(string $name, array $abilities, \DateTimeInterface $expiresAt): NewAccessToken
+    public function createToken(string $name, array $abilities = ['*'], ?\DateTimeInterface $expiresAt = null): NewAccessToken
     {
         /** @var PersonalAccessToken $token */
         $token = $this->tokens()->create([
@@ -39,7 +39,7 @@ trait HasApiTokens
      *
      * @return NewAccessToken
      */
-    public function createAuthToken(string $name, \DateTimeInterface $expiresAt = null, array $abilities = []): NewAccessToken
+    public function createAuthToken(string $name, ?\DateTimeInterface $expiresAt = null, array $abilities = []): NewAccessToken
     {
         return $this->createToken($name, array_merge($abilities, ['auth']), $expiresAt ?? now()->addMinutes(config('sanctum-refresh-token.auth_token_expiration')));
     }
@@ -50,7 +50,7 @@ trait HasApiTokens
      *
      * @return NewAccessToken
      */
-    public function createRefreshToken(string $name, \DateTimeInterface $expiresAt = null)
+    public function createRefreshToken(string $name, ?\DateTimeInterface $expiresAt = null)
     {
         return $this->createToken($name, ['refresh'], $expiresAt ?? now()->addMinutes(config('sanctum-refresh-token.refresh_token_expiration')));
     }
