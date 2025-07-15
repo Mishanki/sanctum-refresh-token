@@ -14,7 +14,7 @@ trait HasApiTokens
     /**
      * @param string $name
      * @param array $abilities
-     * @param null\DateTimeInterface $expiresAt
+     * @param null|\DateTimeInterface $expiresAt
      *
      * @return NewAccessToken
      */
